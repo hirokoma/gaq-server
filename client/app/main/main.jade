@@ -1,0 +1,255 @@
+header#banner.hero-unit
+  .container
+    h1 API Test Page
+    p.lead GAME & QUESTIONS
+
+.container
+  .row
+    .col-sm-12
+      ul.api
+        li
+          h4 ゲームの一覧を取得する
+          h6 補足1: 名前による部分一致検索ができる
+          h6 補足2: 取得件数を選択できる
+          button.btn.btn-success(ng-click="getApiGames()") GET /api/games
+          .input-group.input-group-sm
+            span.input-group-addon title
+            input.form-control(ng-model="getApiGamesParams.title")
+          .input-group.input-group-sm
+            span.input-group-addon count
+            input.form-control(ng-model="getApiGamesParams.count")
+
+        li
+          h4 ユーザを新規に作成する
+          button.btn.btn-success(ng-click="postApiUsers()") POST /api/users
+          .input-group.input-group-sm
+            span.input-group-addon name*
+            input.form-control(ng-model="postApiUsersParams.name")
+          .input-group.input-group-sm
+            span.input-group-addon game_id
+            input.form-control(ng-model="postApiUsersParams.game_id")
+
+        li
+          h4 自身のユーザ情報に変更を加える
+          h6 補足1: 既存値に対する差分のみ変更する
+          h6 補足2: 空欄は無視される
+          button.btn.btn-success(ng-click="putApiUsers()") PUT /api/users
+          .input-group.input-group-sm
+            span.input-group-addon auth_token*
+            input.form-control(ng-model="putApiUsersParams.auth_token")
+          .input-group.input-group-sm
+            span.input-group-addon name
+            input.form-control(ng-model="putApiUsersParams.name")
+          .input-group.input-group-sm
+            span.input-group-addon game_id
+            input.form-control(ng-model="putApiUsersParams.game_id")
+
+        li
+          h4 自身のユーザ情報を閲覧する
+          button.btn.btn-success(ng-click="getApiUsersMe()") GET /api/users/me
+          .input-group.input-group-sm
+            span.input-group-addon auth_token*
+            input.form-control(ng-model="getApiUsersMeParams.auth_token")
+
+        li
+          h4 質問を新規に作成する
+          button.btn.btn-success(ng-click="postApiQuestions()") POST /api/questions
+          .input-group.input-group-sm
+            span.input-group-addon auth_token*
+            input.form-control(ng-model="postApiQuestionsParams.auth_token")
+          .input-group.input-group-sm
+            span.input-group-addon game_id*
+            input.form-control(ng-model="postApiQuestionsParams.game_id")
+          .input-group.input-group-sm
+            span.input-group-addon title*
+            input.form-control(ng-model="postApiQuestionsParams.title")
+          .input-group.input-group-sm
+            span.input-group-addon text*
+            input.form-control(ng-model="postApiQuestionsParams.text")
+
+        li
+          h4 質問の一覧を取得する
+          h6 補足1: 件数を1-100で指定可能 (デフォルトは10件)
+          h6 補足2: オフセットをObjectIdで指定可能 (指定しない場合は最新)
+          h6 補足3: ゲームIDを指定可能
+          h6 補足4: 未回答の質問だけ取得することも可能
+          h6 補足5: ベストアンサーの受付を完了しているかどうかのフラグをもつ
+          h6 補足6: 最新のコメント3件を内部にもつ
+          button.btn.btn-success(ng-click="getApiQuestions()") GET /api/questions
+          .input-group.input-group-sm
+            span.input-group-addon auth_token*
+            input.form-control(ng-model="getApiQuestionsParams.auth_token")
+          .input-group.input-group-sm
+            span.input-group-addon count
+            input.form-control(ng-model="getApiQuestionsParams.count")
+          .input-group.input-group-sm
+            span.input-group-addon until_id
+            input.form-control(ng-model="getApiQuestionsParams.until_id")
+          .input-group.input-group-sm
+            span.input-group-addon game_id
+            input.form-control(ng-model="getApiQuestionsParams.game_id")
+          .input-group.input-group-sm
+            span.input-group-addon unanswered
+            input.form-control(ng-model="getApiQuestionsParams.unanswered")
+
+        li
+          h4 指定した質問に対する回答の一覧を取得する
+          h6 補足1: 件数を1-100で指定可能 (デフォルトは10件)
+          h6 補足2: オフセットをObjectIdで指定可能 (指定しない場合は最新)
+          h6 補足3: それぞれの回答は最新のコメント3件を内部にもつ
+          button.btn.btn-success(ng-click="getApiAnswers()") GET /api/answers/
+          .input-group.input-group-sm
+            span.input-group-addon auth_token*
+            input.form-control(ng-model="getApiAnswersParams.auth_token")
+          .input-group.input-group-sm
+            span.input-group-addon question_id*
+            input.form-control(ng-model="getApiAnswersParams.question_id")
+          .input-group.input-group-sm
+            span.input-group-addon count
+            input.form-control(ng-model="getApiAnswersParams.count")
+          .input-group.input-group-sm
+            span.input-group-addon until_id
+            input.form-control(ng-model="getApiAnswersParams.until_id")
+
+        li
+          h4 指定した質問に対する回答を新規に作成する
+          button.btn.btn-success(ng-click="postApiAnswers()") POST /api/answers
+          .input-group.input-group-sm
+            span.input-group-addon auth_token*
+            input.form-control(ng-model="postApiAnswersParams.auth_token")
+          .input-group.input-group-sm
+            span.input-group-addon question_id*
+            input.form-control(ng-model="postApiAnswersParams.question_id")
+          .input-group.input-group-sm
+            span.input-group-addon text*
+            input.form-control(ng-model="postApiAnswersParams.text")
+
+        li
+          h4 指定した回答をベストアンサーにする
+          button.btn.btn-success(ng-click="putApiAnswersBest()") PUT /api/answers/best
+          .input-group.input-group-sm
+            span.input-group-addon auth_token*
+            input.form-control(ng-model="putApiAnswersBestParams.auth_token")
+          .input-group.input-group-sm
+            span.input-group-addon answer_id*
+            input.form-control(ng-model="putApiAnswersBestParams.answer_id")
+
+        li
+          h4 指定した質問、もしくは回答に対するコメントを新規に作成する
+          h6 補足: **印のパラメータは選択必須
+          button.btn.btn-success(ng-click="postApiComments()") POST /api/comments
+          .input-group.input-group-sm
+            span.input-group-addon auth_token*
+            input.form-control(ng-model="postApiCommentsParams.auth_token")
+          .input-group.input-group-sm
+            span.input-group-addon question_id**
+            input.form-control(ng-model="postApiCommentsParams.question_id")
+          .input-group.input-group-sm
+            span.input-group-addon answer_id**
+            input.form-control(ng-model="postApiCommentsParams.answer_id")
+          .input-group.input-group-sm
+            span.input-group-addon text*
+            input.form-control(ng-model="postApiCommentsParams.text")
+
+
+        li
+          h4 指定した質問、もしくは回答に対するコメントの一覧を取得する
+          h6 補足: **印のパラメータは選択必須
+          h6 補足1: 件数を1-100で指定可能 (デフォルトは10件)
+          h6 補足2: オフセットをObjectIdで指定可能 (指定しない場合は最新)
+          button.btn.btn-success(ng-click="getApiComments()") GET /api/comments
+          .input-group.input-group-sm
+            span.input-group-addon auth_token*
+            input.form-control(ng-model="getApiCommentsParams.auth_token")
+          .input-group.input-group-sm
+            span.input-group-addon question_id**
+            input.form-control(ng-model="getApiCommentsParams.question_id")
+          .input-group.input-group-sm
+            span.input-group-addon answer_id**
+            input.form-control(ng-model="getApiCommentsParams.answer_id")
+          .input-group.input-group-sm
+            span.input-group-addon count
+            input.form-control(ng-model="getApiCommentsParams.count")
+          .input-group.input-group-sm
+            span.input-group-addon until_id
+            input.form-control(ng-model="getApiCommentsParams.until_id")
+
+        li
+          h4 指定した回答に対して「イイね」する
+          button.btn.btn-success(ng-click="postApiLikes()") POST /api/likes
+          .input-group.input-group-sm
+            span.input-group-addon auth_token*
+            input.form-control(ng-model="postApiLikesParams.auth_token")
+          .input-group.input-group-sm
+            span.input-group-addon answer_id*
+            input.form-control(ng-model="postApiLikesParams.answer_id")
+
+        li
+          h4 指定した質問、もしくは回答、もしくはコメントを通報する
+          button.btn.btn-success(ng-click="postApiReports()") POST /api/reports
+          .input-group.input-group-sm
+            span.input-group-addon auth_token*
+            input.form-control(ng-model="postApiReportsParams.auth_token")
+          .input-group.input-group-sm
+            span.input-group-addon question_id**
+            input.form-control(ng-model="postApiReportsParams.question_id")
+          .input-group.input-group-sm
+            span.input-group-addon answer_id**
+            input.form-control(ng-model="postApiReportsParams.answer_id")
+          .input-group.input-group-sm
+            span.input-group-addon comment_id**
+            input.form-control(ng-model="postApiReportsParams.comment_id")
+          .input-group.input-group-sm
+            span.input-group-addon text*
+            input.form-control(ng-model="postApiReportsParams.text")
+
+
+      hr
+      h2 管理者用API
+      ul.api
+
+        li
+          h4 ゲームを新規に作成する
+          button.btn.btn-success(ng-click="postApiGames()") POST /api/games
+          .input-group.input-group-sm
+            span.input-group-addon title
+            input.form-control(ng-model="postApiGamesParams.title")
+          .input-group.input-group-sm
+            span.input-group-addon genre
+            input.form-control(ng-model="postApiGamesParams.genre")
+          .input-group.input-group-sm
+            span.input-group-addon description
+            input.form-control(ng-model="postApiGamesParams.description")
+          .input-group.input-group-sm
+            span.input-group-addon image
+            input.form-control(ng-model="postApiGamesParams.image")
+
+        li
+          h4 指定した質問を論理削除する
+          button.btn.btn-danger(ng-click="deleteApiQuestions()") DELETE /api/questions
+          .input-group.input-group-sm
+            span.input-group-addon auth_token*
+            input.form-control(ng-model="deleteApiQuestionsParams.auth_token")
+          .input-group.input-group-sm
+            span.input-group-addon question_id*
+            input.form-control(ng-model="deleteApiQuestionsParams.question_id")
+
+        li
+          h4 指定した回答を論理削除する
+          button.btn.btn-danger(ng-click="deleteApiAnswers()") DELETE /api/answers
+          .input-group.input-group-sm
+            span.input-group-addon auth_token*
+            input.form-control(ng-model="deleteApiAnswersParams.auth_token")
+          .input-group.input-group-sm
+            span.input-group-addon answer_id*
+            input.form-control(ng-model="deleteApiAnswersParams.answer_id")
+
+        li
+          h4 指定したコメントを論理削除する
+          button.btn.btn-danger(ng-click="deleteApiComments()") DELETE /api/comments
+          .input-group.input-group-sm
+            span.input-group-addon auth_token*
+            input.form-control(ng-model="deleteApiCommentsParams.auth_token")
+          .input-group.input-group-sm
+            span.input-group-addon comment_id*
+            input.form-control(ng-model="deleteApiCommentsParams.comment_id")
