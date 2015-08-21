@@ -1,15 +1,20 @@
 # 全APIリスト
 
-  - [GET /api/games](get-apigames) ：ゲームの一覧を取得
-  - [POST /api/users](post-apiusers) ：ユーザーを作成
-  - [PUT /api/users](put-apiusers) ：自身のユーザー情報を変更
-  - [GET /api/users/me](get-apiusersme) ：自身のユーザー情報を閲覧
-  - [POST /api/questions](post-apiquestions) ：質問を作成
-  - [GET /api/questions](get-apiquestions) ：質問の一覧を取得
-  - [POST /api/answers](post-apianswers) ：回答を作成
-  - [GET /api/answers](get-apianswers) ：回答の一覧を取得
+  - [GET /api/games](https://github.com/hirokoma/gaq-server#get-apigames) ：ゲーム一覧の取得
+  - [POST /api/users](https://github.com/hirokoma/gaq-server#post-apiusers) ：ユーザーの作成
+  - [PUT /api/users](https://github.com/hirokoma/gaq-server#put-apiusers) ：自身のユーザー情報の変更
+  - [GET /api/users/me](https://github.com/hirokoma/gaq-server#get-apiusersme) ：自身のユーザー情報の閲覧
+  - [POST /api/questions](https://github.com/hirokoma/gaq-server#post-apiquestions) ：質問の作成
+  - [GET /api/questions](https://github.com/hirokoma/gaq-server#get-apiquestions) ：質問一覧の取得
+  - [POST /api/answers](https://github.com/hirokoma/gaq-server#post-apianswers) ：回答の作成
+  - [GET /api/answers](https://github.com/hirokoma/gaq-server#get-apianswers) ：回答一覧の取得
+  - [PUT /api/answers/best](https://github.com/hirokoma/gaq-server#put-apianswersbest) ：ベストアンサーの決定
+  - [POST /api/comments](https://github.com/hirokoma/gaq-server#post-apicomments) ：コメントの作成
+  - [GET /api/comments](https://github.com/hirokoma/gaq-server#get-apicomments) ：コメント一覧の取得
+  - [POST /api/likes](https://github.com/hirokoma/gaq-server#post-apilikes) ：「いいね」する
+  - [POST /api/reports](https://github.com/hirokoma/gaq-server#post-apireports) ：通報する
 
-#<a name="get-apigames"> GET /api/games
+# GET /api/games
 ##### ゲームの一覧を取得する
   - 認証: 不要
 
@@ -220,7 +225,7 @@ ___
 - リクエスト例
 
 ~~~json
-/api/questions/?count=3&game_id=55c8af859165eede62848b3c&unanswered=true
+/api/questions?count=3&game_id=55c8af859165eede62848b3c&unanswered=true
 ~~~
 - レスポンス例
 
@@ -356,7 +361,7 @@ ___
 - リクエスト例
 
 ~~~json
-/api/answers/?question_id=55d4a214daf462e84e52200e&count=2
+/api/answers?question_id=55d4a214daf462e84e52200e&count=2
 ~~~
 - レスポンス例
 
@@ -397,4 +402,208 @@ ___
 }
 ~~~
 ___
-=======
+
+# PUT /api/answers/best
+##### 指定した回答をベストアンサーにする
+
+- 認証: 必要
+
+- リクエストパラメータ
+
+| パラメータ | 要否 | 説明 |
+|:------|:---|:---|
+| answer_id | 必須 | 回答IDを指定することで, その回答をベストアンサーに指定する. 既に他の回答がベストアンサーとして選ばれている場合, このアクションは失敗する. |
+
+- リクエスト例
+
+~~~json
+/api/users
+~~~
+~~~json
+"body": {
+  "game_id": "55d6a3f5daf462e84e522014"
+}
+~~~
+
+
+- レスポンス例
+
+~~~json
+{
+  "answer": {
+    "id": "55d6a3f5daf462e84e522014",
+    "isBest": true,
+    "text": "まんぞくさんは、屋外に置かれている全てのエサを食べます。一方、屋内のエサには寄り付きません。"
+  }
+}
+~~~
+___
+
+# POST /api/comments
+##### コメントを新規に作成する
+
+- 認証: 必要
+
+- リクエストパラメータ
+
+| パラメータ | 要否 | 説明 |
+|:------|:---|:---|
+| question_id | どちらかのみ必須 | 質問IDを指定することで, どの質問に対するコメントかを指定できる. 複数の質問IDを指定することはできない.|
+| answer_id | どちらかのみ必須 | 回答IDを指定することで, どの回答に対するコメントかを指定できる. 複数の回答IDを指定することはできない.|
+| text | 必須 | コメントの本文.|
+
+
+- リクエスト例
+
+~~~json
+/api/comments
+~~~
+~~~json
+"body": {
+  "question_id": "55d4a214daf462e84e52200e",
+  "text": "ちなみに、すべてのエサを試しましたが、すべて食い荒らされます。",
+}
+~~~
+
+- レスポンス例
+
+~~~json
+{
+  "comment": {
+    "id": "55d6bddb557dd2513aa79cb9",
+    "text": "ちなみに、すべてのエサを試しましたが、すべて食い荒らされます。",
+    "user": {
+      "id": "55d45d09daf462e84e52200d",
+      "name": "こまっち"
+    }
+  }
+}
+~~~
+___
+
+# GET /api/comments
+##### コメントの一覧を取得する
+
+- 認証: 必要
+
+- リクエストパラメータ
+
+| パラメータ | 要否 | 説明 |
+|:------|:---|:---|
+| question_id | どちらかのみ必須 | 質問IDを指定することで, その質問に対するコメントのみを取得する. 複数の質問IDを指定することはできない.|
+| answer_id | どちらかのみ必須 | 回答IDを指定することで, その回答に対するコメントのみを取得する. 複数の回答IDを指定することはできない.|
+| count | 任意 | 取得件数. 1〜100の数値で指定する. デフォルトでは10. |
+| until_id | 任意 | コメントIDを指定することで, そのコメントより過去のコメントのみを取得できる.|
+
+- リクエスト例
+
+~~~json
+/api/comments?question_id=55d4a214daf462e84e52200e&count=5
+~~~
+- レスポンス例
+
+~~~json
+{
+  "comments": [
+    {
+      "id": "55d6a151daf462e84e522011",
+      "text": "また、庭先拡張はまだ行っていません。",
+      "time": "2015-08-21-12-56-01",
+      "user": {
+        "_id": "55d699b0daf462e84e52200f",
+        "name": "こまっち"
+      }
+    }, {
+      "id": "55d6a122daf462e84e522010",
+      "text": "ちなみに、すべてのエサを試しましたが、すべて食い荒らされます。",
+      "time": "2015-08-21-12-55-14",
+      "user": {
+        "_id": "55d699b0daf462e84e52200f",
+        "name": "こまっち"
+      }
+    }
+  ]
+}
+~~~
+___
+
+# POST /api/likes
+##### 指定した回答に「いいね」する
+
+- 認証: 必要
+
+- リクエストパラメータ
+
+| パラメータ | 要否 | 説明 |
+|:------|:---|:---|
+| answer_id | 必須 | 回答IDを指定することで, どの回答に対する「いいね」かを指定できる. 複数の回答IDを指定することはできない.|
+
+- リクエスト例
+
+~~~json
+/api/likes
+~~~
+~~~json
+"body": {
+  "answer_id": "55d6a4b2daf462e84e522016"
+}
+~~~
+
+- レスポンス例
+
+~~~json
+{
+  "like": {
+    "id": "55d6c07b557dd2513aa79cba",
+    "answer": {
+      "id": "55d6a4b2daf462e84e522016"
+    },
+    "user": {
+      "id": "55d6bdbe557dd2513aa79cb8",
+      "name": "こまさぶろう"
+    }
+  }
+}
+~~~
+___
+
+# POST /api/reports
+##### 質問, 回答, コメントを通報する
+
+- 認証: 必要
+
+- リクエストパラメータ
+
+| パラメータ | 要否 | 説明 |
+|:------|:---|:---|
+| question_id | どれかのみ必須 | 質問IDを指定することで, どの質問を通報するのかを指定できる. 複数の質問IDを指定することはできない.|
+| answer_id | どれかのみ必須 | 回答IDを指定することで, どの回答を通報するのかを指定できる. 複数の回答IDを指定することはできない.|
+| comment_id | どれかのみ必須 | コメントIDを指定することで, どのコメントを通報するのかを指定できる. 複数のコメントIDを指定することはできない.|
+| text | 必須 | 通報理由. |
+
+- リクエスト例
+
+~~~json
+/api/reports
+~~~
+~~~json
+"body": {
+  "answer_id": "55d6a4b2daf462e84e522016",
+  "text": "不適切な用語の使用"
+}
+~~~
+
+- レスポンス例
+
+~~~json
+{
+  "report": {
+    "id": "55d6c215557dd2513aa79cbb",
+    "user": {
+      "id": "55d6bdbe557dd2513aa79cb8",
+      "name": "こまさぶろう"
+    }
+  }
+}
+~~~
+___

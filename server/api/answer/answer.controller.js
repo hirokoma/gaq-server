@@ -105,14 +105,11 @@ exports.updateBest = function(req, res) {
   function answerFindOneAndUpdateCallback(err, answer){
     if(err) { return handleError(res, err); }
     if(!answer) { return res.json(400, error.messages.answerUpdateBest['002']); }
+
     var formatted = {
       answer: {
         id: answer._id,
         text: answer.text,
-        user: {
-          id: req.user._id,
-          name: req.user.name
-        },
         isBest: answer.isBest
       }
     };
