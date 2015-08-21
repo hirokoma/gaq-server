@@ -9,7 +9,7 @@
   - [POST /api/answers](post-apianswers) ：回答を作成
   - [GET /api/answers](get-apianswers) ：回答の一覧を取得
 
-# GET /api/games
+#<a name="get-apigames"> GET /api/games
 ##### ゲームの一覧を取得する
   - 認証: 不要
 
