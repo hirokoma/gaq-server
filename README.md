@@ -1,3 +1,15 @@
+# 全APIリスト
+
+  - [GET /api/games](get_apigames)
+  - [POST /api/users](post_apiusers)
+  - [PUT /api/users](put_apiusers)
+  - [GET /api/users/me](get_apiusersme)
+  - [GET /api/games](get_apigames)
+  - [POST /api/questions](post_apiquestions)
+  - [GET /api/questions](get_apiquestions)
+  - [POST /api/answers](post_apianswers)
+  - [GET /api/answers](get_apianswers)
+
 # GET /api/games
 ##### ゲームの一覧を取得する
   - 認証: 不要
