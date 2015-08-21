@@ -1,14 +1,13 @@
 # 全APIリスト
 
-  - [GET /api/games](get_apigames)
-  - [POST /api/users](post_apiusers)
-  - [PUT /api/users](put_apiusers)
-  - [GET /api/users/me](get_apiusersme)
-  - [GET /api/games](get_apigames)
-  - [POST /api/questions](post_apiquestions)
-  - [GET /api/questions](get_apiquestions)
-  - [POST /api/answers](post_apianswers)
-  - [GET /api/answers](get_apianswers)
+  - [GET /api/games](get-apigames) ：ゲームの一覧を取得
+  - [POST /api/users](post-apiusers) ：ユーザーを作成
+  - [PUT /api/users](put-apiusers) ：自身のユーザー情報を変更
+  - [GET /api/users/me](get-apiusersme) ：自身のユーザー情報を閲覧
+  - [POST /api/questions](post-apiquestions) ：質問を作成
+  - [GET /api/questions](get-apiquestions) ：質問の一覧を取得
+  - [POST /api/answers](post-apianswers) ：回答を作成
+  - [GET /api/answers](get-apianswers) ：回答の一覧を取得
 
 # GET /api/games
 ##### ゲームの一覧を取得する
