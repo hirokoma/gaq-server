@@ -9,10 +9,10 @@ var auth = require('../../auth/auth.service');
 var router = express.Router();
 
 //router.get('/', auth.hasRole('admin'), user.index);
-router.delete('/:id', auth.hasRole('admin'), user.destroy);
+//router.delete('/:id', auth.hasRole('admin'), user.destroy);
 router.get('/me', auth.isAuthenticated(), user.me);
 //router.put('/:id/password', auth.isAuthenticated(), user.changePassword);
-router.get('/:id', auth.isAuthenticated(), user.show);
+//router.get('/:id', auth.isAuthenticated(), user.show);
 router.post('/', game.exists, user.create);
 router.put('/', auth.isAuthenticated(), game.exists, user.update);
 

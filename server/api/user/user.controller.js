@@ -57,16 +57,23 @@ exports.update = function(req, res, next) {
   function userFindOneAndUpdateCallback(err, user){
     if (err) return handleError(res, err);
     var conditions = [
-      {path: 'games', select: 'title _id'}
+      {path: 'games', select: '_id title genres'}
     ];
     function userPopulateCallback(err, user){
       var formatted = {
         user: {
           id: user._id,
           name: user.name,
-          games: user.games
+          games: []
         }
       };
+      _.forEach(user.games, function(game) {
+        formatted.user.games.push({
+          id: game.id,
+          title: game.title,
+          genres: game.genres
+        });
+      });
       return res.json(200, formatted);
     };
     User.populate(user, conditions, userPopulateCallback);
@@ -125,16 +132,23 @@ exports.changePassword = function(req, res, next) {
  */
 exports.me = function(req, res, next) {
   var conditions = [
-    {path: 'games', select: 'title _id'}
+    {path: 'games', select: '_id title genres'}
   ];
   function userPopulateCallback(err, user){
     var formatted = {
       user: {
         id: user._id,
         name: user.name,
-        games: _.map(user.games, '_id')
+        games: []
       }
     };
+    _.forEach(user.games, function(game) {
+      formatted.user.games.push({
+        id: game.id,
+        title: game.title,
+        genres: game.genres
+      });
+    });
     return res.json(200, formatted);
   };
   User.populate(req.user, conditions, userPopulateCallback);

@@ -55,8 +55,12 @@ exports.index = function(req, res) {
         formatted.comments.push({
           id: comment._id,
           text: comment.text,
+          reportCount: comment.reportCount,
           time: dater.format(comment.time),
-          user: comment.user
+          user: {
+            id: comment.user.id,
+            name: comment.user.name
+          }
         });
       });
       return res.json(200, formatted);
@@ -86,6 +90,8 @@ exports.create = function(req, res) {
       comment: {
         id: comment._id,
         text: comment.text,
+        reportCount: comment.reportCount,
+        time: dater.format(comment.time),
         user: {
           id: req.user._id,
           name: req.user.name

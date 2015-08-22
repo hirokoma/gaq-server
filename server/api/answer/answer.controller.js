@@ -13,14 +13,31 @@ exports.index = function(req, res) {
     if(err) { return handleError(res, err); }
     var formatted = {answers: []};
     _.forEach(answers, function(answer) {
+      var formattedRecentComments = [];
+      _.forEach(answer.recentComments, function(recentComment) {
+        formattedRecentComments.push({
+          id: recentComment._id,
+          text: recentComment.text,
+          time: dater.format(recentComment.time),
+          user: {
+            id: recentComment.user._id,
+            name: recentComment.user.name
+          }
+        });
+      });
       formatted.answers.push({
         id: answer._id,
         text: answer.text,
-        time: dater.format(answer.time),
         commentCount: answer.commentCount,
-        recentComments: answer.recentComments,
         likeCount: answer.likeCount,
-        user: answer.user
+        reportCount: answer.reportCount,
+        isBest: answer.isBest,
+        recentComments: formattedRecentComments,
+        time: dater.format(answer.time),
+        user: {
+          id: answer.user._id,
+          name: answer.user.name
+        }
       });
     });
     return res.json(200, formatted);
@@ -29,7 +46,7 @@ exports.index = function(req, res) {
   function answerPopulateCallback(err, answers){
     if(err) { return handleError(res, err); }
     var conditions = [
-      {path: 'recentComments.user', select: 'name _id', model: 'User'}
+      {path: 'recentComments.user', select: '_id name', model: 'User'}
     ];
     Comment.populate(answers, conditions, commentPopulateCallback);
   }
@@ -37,8 +54,8 @@ exports.index = function(req, res) {
   function answerFindCallback(err, answers){
     if(err) { return handleError(res, err); }
     var conditions = [
-      {path: 'user', select: 'name _id'},
-      {path: 'recentComments', select: 'user text _id', options: {sort: '-time'} }
+      {path: 'user', select: '_id name'},
+      {path: 'recentComments', select: '_id user text time', options: {sort: 'time'} }
     ];
     Answer.populate(answers, conditions, answerPopulateCallback);
   };
@@ -77,6 +94,12 @@ exports.create = function(req, res) {
       answer: {
         id: answer._id,
         text: answer.text,
+        commentCount: answer.commentCount,
+        likeCount: answer.likeCount,
+        reportCount: answer.reportCount,
+        recentComments: answer.recentComments,
+        isBest: answer.isBest,
+        time: dater.format(answer.time),
         user: {
           id: req.user._id,
           name: req.user.name
@@ -100,21 +123,56 @@ exports.create = function(req, res) {
 
 
 exports.updateBest = function(req, res) {
-  var projection = {};
-  var options = {};
-  function answerFindOneAndUpdateCallback(err, answer){
+  function commentPopulateCallback(err, answer){
     if(err) { return handleError(res, err); }
-    if(!answer) { return res.json(400, error.messages.answerUpdateBest['002']); }
-
     var formatted = {
       answer: {
         id: answer._id,
         text: answer.text,
-        isBest: answer.isBest
+        commentCount: answer.commentCount,
+        likeCount: answer.likeCount,
+        reportCount: answer.reportCount,
+        isBest: answer.isBest,
+        recentComments: [],
+        time: dater.format(answer.time),
+        user: {
+          id: answer.user._id,
+          name: answer.user.name
+        }
       }
     };
-    res.json(202, formatted);
+    _.forEach(answer.recentComments, function(recentComment) {
+      formatted.answer.recentComments.push({
+        id: recentComment._id,
+        text: recentComment.text,
+        time: dater.format(recentComment.time),
+        user: {
+          id: recentComment.user._id,
+          name: recentComment.user.name
+        }
+      });
+    });
+    return res.json(200, formatted);
+  }
+
+  function answerPopulateCallback(err, answer){
+    if(err) { return handleError(res, err); }
+    var conditions = [
+      {path: 'recentComments.user', select: '_id name', model: 'User'}
+    ];
+    Comment.populate(answer, conditions, commentPopulateCallback);
+  }
+
+  function answerFindOneAndUpdateCallback(err, answer){
+    if(err) { return handleError(res, err); }
+    if(!answer) { return res.json(400, error.messages.answerUpdateBest['002']); }
+    var conditions = [
+      {path: 'user', select: '_id name'},
+      {path: 'recentComments', select: '_id user text time', options: {sort: 'time'} }
+    ];
+    Answer.populate(answer, conditions, answerPopulateCallback);
   };
+
   function questionFindOneAndUpdateCallback(err, question){
     if(err) { return handleError(res, err); }
     if(!question) { return res.json(400, error.messages.answerUpdateBest['001']); }
@@ -124,14 +182,18 @@ exports.updateBest = function(req, res) {
       answerFindOneAndUpdateCallback
     );
   };
+
   function answerFindByIdCallback(err, answer){
     if(err) { return handleError(res, err); }
     Question.findOneAndUpdate(
-      { _id: answer.question, bestAnswer: { $exists: false } },
+      { _id: answer.question, bestAnswer: { $eq: null } },
       {$set: {bestAnswer: answer._id}},
       questionFindOneAndUpdateCallback
     );
   };
+
+  var projection = {};
+  var options = {};
   Answer.findById(req.body.answer_id, projection, options, answerFindByIdCallback)
 };
 

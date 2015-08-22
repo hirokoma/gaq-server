@@ -14,6 +14,7 @@
   - [POST /api/likes](https://github.com/hirokoma/gaq-server#post-apilikes) ：「いいね」する
   - [POST /api/reports](https://github.com/hirokoma/gaq-server#post-apireports) ：通報する
 
+
 # GET /api/games
 ##### ゲームの一覧を取得する
   - 認証: 不要
@@ -114,8 +115,11 @@ ___
     "name": "こまちん",
     "games": [
       {
-        "_id": "55c8af859165eede62848b3c",
-        "title": "ねこあつめ"
+        "id": "55c8af859165eede62848b3c",
+        "title": "ねこあつめ",
+        "genres": [
+          "コレクション", "放置ゲー"
+        ]
       }
     ]
   }
@@ -150,13 +154,15 @@ ___
     "name": "こまちん",
     "games": [
       {
-        "_id": "55c8af859165eede62848b3c",
-        "title": "ねこあつめ"
+        "id": "55c8af859165eede62848b3c",
+        "title": "ねこあつめ",
+        "genres": [
+          "コレクション", "放置ゲー"
+        ]
       }
     ]
   }
-}
-~~~
+}~~~
 ___
 
 # POST /api/questions
@@ -194,6 +200,12 @@ ___
     "id": "55d4a214daf462e84e52200e",
     "title": "まんぞくさんの出現条件",
     "text": "まんぞくさんにエサを食い荒らされて困ってます。どうすれば出現しなくなりますか？",
+    "answerCount": 0,
+    "commentCount": 0,
+    "reportCount": 0,
+    "recentComments": [],
+    "bestAnswer": null,
+    "time": "2015-08-20-00-34-44",
     "game": {
       "id": "55c8af859165eede62848b3c",
       "title": "ねこあつめ"
@@ -237,12 +249,16 @@ ___
       "title": "まんぞくさんの出現条件",
       "text": "まんぞくさんにエサを食い荒らされて困ってます。どうすれば出現しなくなりますか？",
       "answerCount": 0,
-      "bestAnswer": null,
       "commentCount": 2,
+      "reportCount": 0,
+      "bestAnswer": null,
       "time": "2015-08-20-00-34-44",
       "game": {
-        "_id": "55c8af859165eede62848b3c",
-        "title": "ねこあつめ"
+        "id": "55c8af859165eede62848b3c",
+        "title": "ねこあつめ",
+        "genres": [
+          "コレクション", "放置ゲー"
+        ]
       },
       "user": {
         "id": "55d45d09daf462e84e52200d",
@@ -250,15 +266,17 @@ ___
       },
       "recentComments": [
         {
-          "_id": "55d6a151daf462e84e522011",
-          "text": "また、庭先拡張はまだ行っていません。",
+          "id": "55d6a122daf462e84e522010",
+          "text": "ちなみに、すべてのエサを試しましたが、すべて食い荒らされます。",
+          "time": "2015-08-20-01-29-15",
           "user": {
             "id": "55d45d09daf462e84e52200d",
             "name": "こまちん"
           }
-        },{
-          "_id": "55d6a122daf462e84e522010",
-          "text": "ちなみに、すべてのエサを試しましたが、すべて食い荒らされます。",
+        }, {
+          "id": "55d6a151daf462e84e522011",
+          "text": "また、庭先拡張はまだ行っていません。",
+          "time": "2015-08-20-01-30-01",
           "user": {
             "id": "55d45d09daf462e84e52200d",
             "name": "こまちん"
@@ -270,12 +288,16 @@ ___
       "title": "ねこ缶のコスパ",
       "text": "ねこ缶は高い割に、にぼし回収率が高級かりかりより低い気がします。ねこ缶のメリットを教えてください。",
       "answerCount": 0,
-      "bestAnswer": null,
       "commentCount": 0,
+      "reportCount": 0,
+      "bestAnswer": null,
       "time": "2015-08-20-07-30-41",
       "game": {
-        "_id": "55c8af859165eede62848b3c",
-        "title": "ねこあつめ"
+        "id": "55c8af859165eede62848b3c",
+        "title": "ねこあつめ",
+        "genres": [
+          "コレクション", "放置ゲー"
+        ]
       },
       "user": {
         "id": "55d45d09daf462e84e52200e",
@@ -286,12 +308,16 @@ ___
       "title": "びすとろさんの出現アイテム",
       "text": "びすとろさんって、ストーブ以外でも来ますか？",
       "answerCount": 0,
-      "bestAnswer": null,
       "commentCount": 0,
+      "reportCount": 0,
+      "bestAnswer": null,
       "time": "2015-08-20-11-30-41",
       "game": {
-        "_id": "55c8af859165eede62848b3c",
-        "title": "ねこあつめ"
+        "id": "55c8af859165eede62848b3c",
+        "title": "ねこあつめ",
+        "genres": [
+          "コレクション", "放置ゲー"
+        ]
       },
       "user": {
         "id": "55d45d09daf462e84e52200a",
@@ -336,6 +362,12 @@ ___
   "answer": {
     "id": "55d6a3f5daf462e84e522014",
     "text": "まんぞくさんは、屋外に置かれている全てのエサを食べます。一方、屋内のエサには寄り付きません。",
+    "commentCount": 0,
+    "likeCount": 0,
+    "reportCount": 0,
+    "recentComments": [],
+    "isBest": false,
+    "time": "2015-08-20-12-35-16",
     "user": {
       "id": "55d6a3a7daf462e84e522013",
       "name": "ぴかちゅう"
@@ -372,9 +404,12 @@ ___
       "id": "55d6a4b2daf462e84e522016",
       "text": "庭先拡張して屋内にエサをおくと良いですよ。",
       "commentCount": 0,
+      "likeCount": 0,
+      "reportCount": 0,
+      "isBest": false,
       "time": "2015-08-21-13-10-26",
       "user": {
-        "_id": "55d6a485daf462e84e522015",
+        "id": "55d6a485daf462e84e522015",
         "name": "ぐんまちゃん"
       },
       "recentComments": []
@@ -382,17 +417,21 @@ ___
       "id": "55d6a3f5daf462e84e522014",
       "text": "まんぞくさんは、屋外に置かれている全てのエサを食べます。一方、屋内のエサには寄り付きません。",
       "commentCount": 1,
+      "likeCount": 0,
+      "reportCount": 0,
+      "isBest": false,
       "time": "2015-08-21-13-07-17",
       "user": {
-        "_id": "55d6a3a7daf462e84e522013",
+        "id": "55d6a3a7daf462e84e522013",
         "name": "ぴかちゅう"
       },
       "recentComments": [
         {
-          "_id": "55d6a62ddaf462e84e522017",
+          "id": "55d6a62ddaf462e84e522017",
           "text": "ちなみに、屋内と屋外の境界は公式サイトで公開されている",
+          "time": "2015-08-21-15-00-20",
           "user": {
-            "_id": "55d6a485daf462e84e522015",
+            "id": "55d6a485daf462e84e522015",
             "name": "ぐんまちゃん"
           }
         }
@@ -432,8 +471,17 @@ ___
 {
   "answer": {
     "id": "55d6a3f5daf462e84e522014",
+    "text": "まんぞくさんは、屋外に置かれている全てのエサを食べます。一方、屋内のエサには寄り付きません。",
+    "commentCount": 0,
+    "likeCount": 0,
+    "reportCount": 0,
+    "recentComments": [],
     "isBest": true,
-    "text": "まんぞくさんは、屋外に置かれている全てのエサを食べます。一方、屋内のエサには寄り付きません。"
+    "time": "2015-08-20-12-35-16",
+    "user": {
+      "id": "55d6a3a7daf462e84e522013",
+      "name": "ぴかちゅう"
+    }
   }
 }
 ~~~
@@ -472,6 +520,8 @@ ___
   "comment": {
     "id": "55d6bddb557dd2513aa79cb9",
     "text": "ちなみに、すべてのエサを試しましたが、すべて食い荒らされます。",
+    "reportCount": 0,
+    "time": "2015-08-21-15-14-56",
     "user": {
       "id": "55d45d09daf462e84e52200d",
       "name": "こまっち"
@@ -508,17 +558,19 @@ ___
     {
       "id": "55d6a151daf462e84e522011",
       "text": "また、庭先拡張はまだ行っていません。",
+      "reportCount": 0,
       "time": "2015-08-21-12-56-01",
       "user": {
-        "_id": "55d699b0daf462e84e52200f",
+        "id": "55d699b0daf462e84e52200f",
         "name": "こまっち"
       }
     }, {
       "id": "55d6a122daf462e84e522010",
       "text": "ちなみに、すべてのエサを試しましたが、すべて食い荒らされます。",
+      "reportCount": 0,
       "time": "2015-08-21-12-55-14",
       "user": {
-        "_id": "55d699b0daf462e84e52200f",
+        "id": "55d699b0daf462e84e52200f",
         "name": "こまっち"
       }
     }
@@ -555,6 +607,7 @@ ___
 {
   "like": {
     "id": "55d6c07b557dd2513aa79cba",
+    "time": "2015-08-20-01-51-04",
     "answer": {
       "id": "55d6a4b2daf462e84e522016"
     },
@@ -599,6 +652,10 @@ ___
 {
   "report": {
     "id": "55d6c215557dd2513aa79cbb",
+    "time": "2015-08-20-01-10-00",
+    "answer": {
+      "id": "55d6a4b2daf462e84e522016"
+    },
     "user": {
       "id": "55d6bdbe557dd2513aa79cb8",
       "name": "こまさぶろう"

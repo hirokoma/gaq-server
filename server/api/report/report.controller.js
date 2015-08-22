@@ -40,12 +40,26 @@ exports.create = function(req, res) {
       report: {
         id: report._id,
         text: report.text,
+        time: dater.format(report.time),
         user: {
           id: req.user._id,
           name: req.user.name
         }
       }
     };
+    if(report.question && !report.answer && !report.comment){
+      formatted.report.question = {
+        id: report.question
+      };
+    } else if (report.answer && !report.comment && !report.question){
+      formatted.report.answer = {
+        id: report.answer
+      };
+    } else if (report.comment && !report.question && !report.answer){
+      formatted.report.comment = {
+        id: report.comment
+      };
+    }
     res.json(201, formatted);
   }
 

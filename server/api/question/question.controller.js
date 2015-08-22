@@ -11,16 +11,33 @@ exports.index = function(req, res) {
     if(err) { return handleError(res, err); }
     var formatted = {questions: []};
     _.forEach(questions, function(question) {
+      var formattedRecentComments = [];
+      _.forEach(question.recentComments, function(recentComment) {
+        formattedRecentComments.push({
+          id: recentComment._id,
+          text: recentComment.text,
+          time: dater.format(recentComment.time),
+          user: {
+            id: recentComment.user._id,
+            name: recentComment.user.name
+          }
+        });
+      });
       formatted.questions.push({
         id: question._id,
         title: question.title,
         text: question.text,
-        game: question.game,
+        game: {
+          id: question.game._id,
+          title: question.game.title,
+          genres: question.game.genres
+        },
         time: dater.format(question.time),
         answerCount: question.answerCount,
-        bestAnswer: question.bestAnswer ? question.bestAnswer: null,
         commentCount: question.commentCount,
-        recentComments: question.recentComments,
+        reportCount: question.reportCount,
+        bestAnswer: question.bestAnswer,
+        recentComments: formattedRecentComments,
         user: question.user
       });
     });
@@ -38,9 +55,9 @@ exports.index = function(req, res) {
   function questionFindCallback(err, questions){
     if(err) { return handleError(res, err); }
     var conditions = [
-      {path: 'user', select: 'name _id'},
-      {path: 'game', select: 'title _id'},
-      {path: 'recentComments', select: 'user text _id', options: {sort: '-time'} }
+      {path: 'user', select: '_id name '},
+      {path: 'game', select: '_id title genres'},
+      {path: 'recentComments', select: '_id user text time', options: {sort: 'time'} }
     ];
     Question.populate(questions, conditions, questionPopulateCallback);
   };
@@ -98,13 +115,20 @@ exports.create = function(req, res) {
         id: question._id,
         title: question.title,
         text: question.text,
+        answerCount: question.answerCount,
+        commentCount: question.commentCount,
+        reportCount: question.reportCount,
+        recentComments: question.recentComments,
+        bestAnswer: question.bestAnswer,
+        time: dater.format(question.time),
         user: {
           id: req.user._id,
           name: req.user.name
         },
         game: {
           id: req.games[0]._id,
-          title: req.games[0].title
+          title: req.games[0].title,
+          genres: req.games[0].genres
         }
       }
     };

@@ -14,7 +14,7 @@ var QuestionSchema = new Schema({
   answerCount: {type: Number, default: 0},
   commentCount: {type: Number, default: 0},
   reportCount: {type: Number, default: 0},
-  bestAnswer: {type: Schema.Types.ObjectId, ref: 'Answer'},
+  bestAnswer: {type: Schema.Types.ObjectId, ref: 'Answer', default: null},
   time: {type: Date, default: Date.now}
 });
 

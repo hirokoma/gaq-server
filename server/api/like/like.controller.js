@@ -3,6 +3,7 @@
 var _ = require('lodash');
 var Like = require('./like.model');
 var Answer = require('./../answer/answer.model');
+var dater = require('./../../components/dater/dater.js');
 
 // Creates a new like in the DB.
 exports.create = function(req, res) {
@@ -15,6 +16,7 @@ exports.create = function(req, res) {
     var formatted = {
       like: {
         id: like._id,
+        time: dater.format(like.time),
         user: {
           id: req.user._id,
           name: req.user.name
